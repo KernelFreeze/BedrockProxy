@@ -1,0 +1,5 @@
+name: PocketProxy
+version: ${project.version}
+main: me.kernelfreeze.pocketproxy.PocketProxy
+description: Allow MCPE players on your BungeeCord server!
+author: KernelFreeze
