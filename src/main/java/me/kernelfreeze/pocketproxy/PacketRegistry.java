@@ -33,7 +33,7 @@ public class PacketRegistry {
 
     public enum NetworkType {
         UNKOWN(-1),
-        LOGIN_PACKET(0x01, LoginPacket.class),
+        LOGIN_PACKET(0x00, LoginPacket.class),
         PLAY_STATUS_PACKET(0x02, PlayStatusPacket.class),
         SERVER_TO_CLIENT_HANDSHAKE_PACKET(0x03, ServerHandshakePacket.class),
         CLIENT_TO_SERVER_HANDSHAKE_PACKET(0x04),

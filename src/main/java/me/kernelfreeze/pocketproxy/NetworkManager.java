@@ -54,7 +54,7 @@ public class NetworkManager implements RakNetServerListener {
         server.setListener(this);
 
         server.startThreaded();
-        PocketProxy.getInstance().getLogger().info("Listening for MCPE clients at 0.0.0.0:" + PocketProxy.PORT);
+        PocketProxy.getInstance().getLogger().info("Listening for MCPE clients on 0.0.0.0:" + PocketProxy.PORT);
     }
 
     public static void sendPacket(RakNetClientSession session, DataPacket packet) {

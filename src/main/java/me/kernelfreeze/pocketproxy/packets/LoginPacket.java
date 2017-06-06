@@ -1,13 +1,9 @@
 package me.kernelfreeze.pocketproxy.packets;
 
-import io.netty.buffer.Unpooled;
-import me.kernelfreeze.pocketproxy.Compression;
 import me.kernelfreeze.pocketproxy.NetworkManager;
 import me.kernelfreeze.pocketproxy.PocketProxy;
 import me.kernelfreeze.pocketproxy.raknet.RakNetPacket;
 import net.md_5.bungee.api.ProxyServer;
-
-import java.util.zip.DataFormatException;
 
 /**
  * @author KernelFreeze
@@ -20,8 +16,11 @@ public class LoginPacket extends DataPacket {
 
     @Override
     public void decode() {
-        player.protocolVersion = Math.toIntExact(readUIntLE());
+        if (player.isLoggedIn()) return;
+        buffer().readerIndex(1);
+
         player.gameEdition = readUByte();
+        player.protocolVersion = readUShortLE();
 
         if (!PocketProxy.isCompatible(player.getProtocolVersion())) {
             if (player.protocolVersion > PocketProxy.PROTOCOL) {
@@ -32,18 +31,13 @@ public class LoginPacket extends DataPacket {
                 player.disconnect(ProxyServer.getInstance().getTranslation("outdated_client"));
             }
             PocketProxy.getInstance().getLogger().info(String.format("Client from address %s tryied to login with protocol version %s", player.getSession().getAddress(), player.getProtocolVersion()));
-            return;
+            return; //Do not attempt to decode for non-accepted protocols
         }
+        skip(3);
 
-        byte[] payload = readBytes();
+        player.chainData = readString();
 
-        try {
-            Compression.inflate(Unpooled.wrappedBuffer(payload));
-            player.chainData = readStringLE();
-            player.skinData = readStringLE();
-        } catch (DataFormatException | IndexOutOfBoundsException e) {
-            throw new RuntimeException("Unable to inflate login data body", e);
-        }
+        //player.skinData = readStringLE();
 
         PocketProxy.getInstance().getLogger().info(
                 String.format("[%s] <-> Logged in!!", "hola")

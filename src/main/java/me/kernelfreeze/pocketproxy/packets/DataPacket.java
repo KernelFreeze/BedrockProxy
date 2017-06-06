@@ -58,7 +58,7 @@ public class DataPacket extends RakNetPacket {
     }
 
     public void skip(int bytes) {
-        buffer().readerIndex(bytes);
+        buffer().readerIndex(buffer().readerIndex() + bytes);
     }
 
     public void handle() {

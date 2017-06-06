@@ -327,7 +327,7 @@ public class Packet {
 
     /**
      * Reads a UTF-8 String with it's length prefixed by a unsigned little
-     * endian short.
+     * endian int.
      *
      * @return a String.
      */
