@@ -2,6 +2,8 @@ package me.kernelfreeze.pocketproxy.packets;
 
 import lombok.Getter;
 import lombok.Setter;
+import me.kernelfreeze.pocketproxy.PacketRegistry;
+import me.kernelfreeze.pocketproxy.raknet.RakNetPacket;
 
 /**
  * @author KernelFreeze
@@ -14,7 +16,11 @@ public class DisconnectPacket extends DataPacket {
     private String message;
 
     public DisconnectPacket() {
-        super(NetworkType.DISCONNECT_PACKET);
+        super(PacketRegistry.NetworkType.DISCONNECT_PACKET);
+    }
+
+    public DisconnectPacket(RakNetPacket packet) {
+        super(packet);
     }
 
     @Override

@@ -3,9 +3,8 @@ package me.kernelfreeze.pocketproxy.packets;
 import io.netty.buffer.Unpooled;
 import me.kernelfreeze.pocketproxy.Compression;
 import me.kernelfreeze.pocketproxy.NetworkManager;
-import me.kernelfreeze.pocketproxy.PocketPlayer;
 import me.kernelfreeze.pocketproxy.PocketProxy;
-import net.marfgamer.jraknet.Packet;
+import me.kernelfreeze.pocketproxy.raknet.RakNetPacket;
 import net.md_5.bungee.api.ProxyServer;
 
 import java.util.zip.DataFormatException;
@@ -15,16 +14,13 @@ import java.util.zip.DataFormatException;
  * @since 5/06/17
  */
 public class LoginPacket extends DataPacket {
-    private final PocketPlayer player;
-
-    public LoginPacket(PocketPlayer player, Packet packet) {
-        super(packet, NetworkType.LOGIN_PACKET);
-        this.player = player;
+    public LoginPacket(RakNetPacket packet) {
+        super(packet);
     }
 
     @Override
     public void decode() {
-        player.protocolVersion = readInt();
+        player.protocolVersion = Math.toIntExact(readUInt());
         player.gameEdition = readUByte();
 
         if (!PocketProxy.isCompatible(player.getProtocolVersion())) {
@@ -35,6 +31,7 @@ public class LoginPacket extends DataPacket {
                 NetworkManager.sendPacket(player, new PlayStatusPacket(PlayStatusPacket.Status.LOGIN_FAILED_CLIENT));
                 player.disconnect(ProxyServer.getInstance().getTranslation("outdated_client"));
             }
+            PocketProxy.getInstance().getLogger().info(String.format("Client from address %s tryied to login with protocol version %s", player.getSession().getAddress(), player.getProtocolVersion()));
             return;
         }
 
@@ -44,11 +41,17 @@ public class LoginPacket extends DataPacket {
             Compression.inflate(Unpooled.wrappedBuffer(payload));
             player.chainData = readStringLE();
             player.skinData = readStringLE();
-            player.setLoggedIn(true);
         } catch (DataFormatException | IndexOutOfBoundsException e) {
             throw new RuntimeException("Unable to inflate login data body", e);
         }
-        //sendPacket(player, new PlayStatusPacket(PlayStatusPacket.Status.LOGIN_SUCCESS));
-        //sendPacket(player, new ServerToClientHandshake(PocketPlayer.getPlayer(session.getGloballyUniqueId())));
+
+        PocketProxy.getInstance().getLogger().info(
+                String.format("[%s] <-> Logged in!!", "hola")
+        );
+
+        player.setLoggedIn(true);
+
+        NetworkManager.sendPacket(player, new PlayStatusPacket(PlayStatusPacket.Status.LOGIN_SUCCESS));
+        NetworkManager.sendPacket(player, new ServerHandshakePacket(getPlayer()));
     }
 }

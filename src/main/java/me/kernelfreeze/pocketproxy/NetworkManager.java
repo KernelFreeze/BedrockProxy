@@ -3,13 +3,12 @@ package me.kernelfreeze.pocketproxy;
 
 import lombok.Getter;
 import me.kernelfreeze.pocketproxy.packets.DataPacket;
-import me.kernelfreeze.pocketproxy.packets.LoginPacket;
-import net.marfgamer.jraknet.RakNetPacket;
-import net.marfgamer.jraknet.identifier.MCPEIdentifier;
-import net.marfgamer.jraknet.protocol.Reliability;
-import net.marfgamer.jraknet.server.RakNetServer;
-import net.marfgamer.jraknet.server.RakNetServerListener;
-import net.marfgamer.jraknet.session.RakNetClientSession;
+import me.kernelfreeze.pocketproxy.raknet.RakNetPacket;
+import me.kernelfreeze.pocketproxy.raknet.identifier.MCPEIdentifier;
+import me.kernelfreeze.pocketproxy.raknet.protocol.Reliability;
+import me.kernelfreeze.pocketproxy.raknet.server.RakNetServer;
+import me.kernelfreeze.pocketproxy.raknet.server.RakNetServerListener;
+import me.kernelfreeze.pocketproxy.raknet.session.RakNetClientSession;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.config.ListenerInfo;
 
@@ -83,25 +82,6 @@ public class NetworkManager implements RakNetServerListener {
 
     @Override
     public void handleMessage(RakNetClientSession session, RakNetPacket pk, int channel) {
-        // Check if is an Minecraft Packet
-        if (pk.getId() != 0xFE) return;
-
-        // Read the packet
-        PocketPlayer p = PocketPlayer.getPlayer(session);
-
-        DataPacket packet = new DataPacket(pk);
-
-        switch (packet.getNetworkId()) {
-            case LOGIN_PACKET:
-                new LoginPacket(p, pk).decode();
-                break;
-            case UNKOWN:
-                pk.buffer().resetReaderIndex();
-                pk.readByte();
-                PocketProxy.getInstance().getLogger().info(
-                        String.format("Unknown packet from %s: %s", session.getAddress(), Integer.toHexString(pk.readByte()).toUpperCase())
-                );
-                break;
-        }
+        PacketRegistry.handlePacket(pk, PocketPlayer.getPlayer(session));
     }
 }

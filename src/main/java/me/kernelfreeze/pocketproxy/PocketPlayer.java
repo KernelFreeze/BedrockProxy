@@ -3,7 +3,7 @@ package me.kernelfreeze.pocketproxy;
 import lombok.Getter;
 import lombok.Setter;
 import me.kernelfreeze.pocketproxy.packets.DisconnectPacket;
-import net.marfgamer.jraknet.session.RakNetClientSession;
+import me.kernelfreeze.pocketproxy.raknet.session.RakNetClientSession;
 
 import java.util.HashMap;
 

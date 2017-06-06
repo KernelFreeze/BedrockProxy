@@ -2,6 +2,7 @@ package me.kernelfreeze.pocketproxy.packets;
 
 import lombok.Getter;
 import lombok.Setter;
+import me.kernelfreeze.pocketproxy.PacketRegistry;
 import me.kernelfreeze.pocketproxy.PocketPlayer;
 import me.kernelfreeze.pocketproxy.Security;
 
@@ -13,7 +14,7 @@ import java.util.Base64;
  * @author KernelFreeze
  * @since 5/06/17
  */
-public class ServerToClientHandshake extends DataPacket {
+public class ServerHandshakePacket extends DataPacket {
     @Getter
     @Setter
     private KeyPair publicKey;
@@ -22,8 +23,8 @@ public class ServerToClientHandshake extends DataPacket {
     @Setter
     private byte[] serverToken;
 
-    public ServerToClientHandshake(PocketPlayer p) {
-        super(NetworkType.SERVER_TO_CLIENT_HANDSHAKE_PACKET);
+    public ServerHandshakePacket(PocketPlayer p) {
+        super(PacketRegistry.NetworkType.SERVER_TO_CLIENT_HANDSHAKE_PACKET);
 
         try {
             KeyPairGenerator generator = KeyPairGenerator.getInstance("EC");

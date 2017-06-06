@@ -2,6 +2,8 @@ package me.kernelfreeze.pocketproxy.packets;
 
 import lombok.Getter;
 import lombok.Setter;
+import me.kernelfreeze.pocketproxy.PacketRegistry;
+import me.kernelfreeze.pocketproxy.raknet.RakNetPacket;
 
 /**
  * @author KernelFreeze
@@ -13,8 +15,12 @@ public class PlayStatusPacket extends DataPacket {
     private Status status;
 
     public PlayStatusPacket(Status status) {
-        super(NetworkType.PLAY_STATUS_PACKET);
+        super(PacketRegistry.NetworkType.PLAY_STATUS_PACKET);
         this.status = status;
+    }
+
+    public PlayStatusPacket(RakNetPacket packet) {
+        super(packet);
     }
 
     @Override
