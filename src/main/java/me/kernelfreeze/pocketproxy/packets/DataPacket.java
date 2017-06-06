@@ -1,5 +1,6 @@
 package me.kernelfreeze.pocketproxy.packets;
 
+import io.netty.buffer.ByteBuf;
 import lombok.Getter;
 import net.marfgamer.jraknet.Packet;
 import net.marfgamer.jraknet.RakNetPacket;
@@ -8,8 +9,45 @@ import net.marfgamer.jraknet.RakNetPacket;
  * @author KernelFreeze
  * @since 5/06/17
  */
-public class MCPEPacket extends RakNetPacket {
-    enum NetworkType {
+public class DataPacket extends RakNetPacket {
+    @Getter
+    protected NetworkType networkId;
+
+    public DataPacket(Packet packet) {
+        super(packet);
+        networkId = NetworkType.getById(readUByte());
+    }
+
+    public DataPacket(Packet packet, NetworkType id) {
+        super(packet);
+        networkId = id;
+    }
+
+    public DataPacket(ByteBuf data) {
+        super(data);
+        networkId = NetworkType.getById(readUByte());
+    }
+
+    public DataPacket(NetworkType id) {
+        super(0xFE);
+        networkId = id;
+    }
+
+    public void writeBytes(byte[] bytes) {
+        writeUInt(bytes.length);
+        for (byte b : bytes) {
+            writeByte(b);
+        }
+    }
+
+    public byte[] readBytes() {
+        byte[] r = new byte[(int) readUInt()];
+        read(r);
+        return r;
+    }
+
+    public enum NetworkType {
+        UNKOWN(-1),
         LOGIN_PACKET(0x01),
         PLAY_STATUS_PACKET(0x02),
         SERVER_TO_CLIENT_HANDSHAKE_PACKET(0x03),
@@ -117,20 +155,7 @@ public class MCPEPacket extends RakNetPacket {
                     return e;
                 }
             }
-            return null;
+            return UNKOWN;
         }
-    }
-
-    @Getter
-    protected NetworkType networkId;
-
-    public MCPEPacket(Packet packet) {
-        super(packet);
-        networkId = NetworkType.getById(readUByte());
-    }
-
-    public MCPEPacket(NetworkType id) {
-        super(0xFE);
-        networkId = id;
     }
 }

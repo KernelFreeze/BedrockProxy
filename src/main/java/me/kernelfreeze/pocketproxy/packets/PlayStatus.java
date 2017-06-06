@@ -7,10 +7,20 @@ import lombok.Setter;
  * @author KernelFreeze
  * @since 5/06/17
  */
-public class PlayStatus extends MCPEPacket {
+public class PlayStatus extends DataPacket {
     @Getter
     @Setter
     private Status status;
+
+    public PlayStatus(Status status) {
+        super(NetworkType.PLAY_STATUS_PACKET);
+        this.status = status;
+    }
+
+    @Override
+    public void encode() {
+        writeInt(status.getId());
+    }
 
     public enum Status {
         LOGIN_SUCCESS(0),
@@ -27,15 +37,5 @@ public class PlayStatus extends MCPEPacket {
         Status(int id) {
             this.id = id;
         }
-    }
-
-    public PlayStatus(Status status) {
-        super(NetworkType.PLAY_STATUS_PACKET);
-        this.status = status;
-    }
-
-    @Override
-    public void encode() {
-        writeInt(status.getId());
     }
 }
