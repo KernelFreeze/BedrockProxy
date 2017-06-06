@@ -20,7 +20,7 @@ public class PacketRegistry {
                 inst.handle();
             } else {
                 PocketProxy.getInstance().getLogger().warning(
-                        String.format("Unknown packet %s from %s",
+                        String.format("Unknown packet 0x%s from %s",
                                 Integer.toHexString(packet.getId()).toUpperCase(),
                                 player.getSession().getAddress())
                 );

@@ -34,11 +34,9 @@ public class BatchPacket extends DataPacket {
             throw new RuntimeException("Decoded BatchPacket payload is empty");
         }
 
-        buffer().resetReaderIndex();
-
+        skip(2);
         while (buffer().readerIndex() < buffer().readableBytes()) {
-            byte[] bytes = readBytes();
-            PacketRegistry.handlePacket(new RakNetPacket(bytes), getPlayer());
+            PacketRegistry.handlePacket(new RakNetPacket(readBytes()), getPlayer());
         }
     }
 }

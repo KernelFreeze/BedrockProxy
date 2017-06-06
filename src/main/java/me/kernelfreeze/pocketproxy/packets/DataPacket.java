@@ -32,7 +32,7 @@ public class DataPacket extends RakNetPacket {
 
     public DataPacket(ByteBuf data) {
         super(data);
-        networkId = PacketRegistry.NetworkType.getById(readUByte());
+        networkId = PacketRegistry.NetworkType.getById(getId());
     }
 
     public DataPacket(PacketRegistry.NetworkType id) {
@@ -50,11 +50,15 @@ public class DataPacket extends RakNetPacket {
     public byte[] readBytes() {
         int len = readUShort();
         if (buffer().readerIndex() + len > buffer().readableBytes()) {
-            len = buffer().readableBytes() - buffer().readerIndex();
+            throw new RuntimeException("I can't read " + (buffer().readableBytes() - buffer().readerIndex() + len) + " bytes!");
         }
         byte[] r = new byte[len];
         read(r);
         return r;
+    }
+
+    public void skip(int bytes) {
+        buffer().readerIndex(bytes);
     }
 
     public void handle() {

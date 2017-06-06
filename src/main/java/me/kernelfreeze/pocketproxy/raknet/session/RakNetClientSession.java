@@ -116,7 +116,7 @@ public class RakNetClientSession extends RakNetSession {
             ConnectionRequest request = new ConnectionRequest(packet);
             request.decode();
 
-            if (request.clientGuid == this.getGloballyUniqueId() && request.useSecurity != true) {
+            if (request.clientGuid == this.getGloballyUniqueId() && !request.useSecurity) {
                 ConnectionRequestAccepted requestAccepted = new ConnectionRequestAccepted();
                 requestAccepted.clientAddress = this.getAddress();
                 requestAccepted.clientTimestamp = request.timestamp;
@@ -135,7 +135,7 @@ public class RakNetClientSession extends RakNetSession {
                 String reason = "unknown error";
                 if (request.clientGuid != this.getGloballyUniqueId()) {
                     reason = "client GUID did not match";
-                } else if (request.useSecurity == true) {
+                } else if (request.useSecurity) {
                     reason = "client has security enabled";
                 }
                 this.sendMessage(Reliability.RELIABLE_ORDERED, ID_CONNECTION_ATTEMPT_FAILED);

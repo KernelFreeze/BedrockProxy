@@ -20,7 +20,7 @@ public class LoginPacket extends DataPacket {
 
     @Override
     public void decode() {
-        player.protocolVersion = Math.toIntExact(readUInt());
+        player.protocolVersion = Math.toIntExact(readUIntLE());
         player.gameEdition = readUByte();
 
         if (!PocketProxy.isCompatible(player.getProtocolVersion())) {

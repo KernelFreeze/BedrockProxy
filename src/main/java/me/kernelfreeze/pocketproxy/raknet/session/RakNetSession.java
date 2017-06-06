@@ -208,8 +208,8 @@ public abstract class RakNetSession implements UnumRakNetPeer, GeminusRakNetPeer
      *
      * @param keepAliveState the new keep alive state.
      */
-    public void setKeepAliveState(RakNetState keepAliveState) {
-        this.setKeepAliveState(keepAliveState.getOrder());
+    public void setKeepAliveState(int keepAliveState) {
+        this.keepAliveState = keepAliveState;
     }
 
     /**
@@ -217,8 +217,8 @@ public abstract class RakNetSession implements UnumRakNetPeer, GeminusRakNetPeer
      *
      * @param keepAliveState the new keep alive state.
      */
-    public void setKeepAliveState(int keepAliveState) {
-        this.keepAliveState = keepAliveState;
+    public void setKeepAliveState(RakNetState keepAliveState) {
+        this.setKeepAliveState(keepAliveState.getOrder());
     }
 
     /**
@@ -650,7 +650,7 @@ public abstract class RakNetSession implements UnumRakNetPeer, GeminusRakNetPeer
             ConnectedPong pong = new ConnectedPong(packet);
             pong.decode();
 
-            if (latencyEnabled == true) {
+            if (latencyEnabled) {
                 if (latencyIdentifier - pong.identifier == 1) {
                     long latencyRaw = (this.lastPacketReceiveTime - this.lastPingSendTime);
 
