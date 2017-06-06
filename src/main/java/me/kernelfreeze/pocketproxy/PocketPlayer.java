@@ -1,8 +1,8 @@
 package me.kernelfreeze.pocketproxy;
 
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
+import me.kernelfreeze.pocketproxy.packets.DisconnectPacket;
 import net.marfgamer.jraknet.session.RakNetClientSession;
 
 import java.util.HashMap;
@@ -57,7 +57,18 @@ public class PocketPlayer {
         this.serverKey = serverKey;
     }
 
-    public void disconnect(@NonNull String reason) {
-        PocketProxy.getInstance().getNetworkManager().getServer().removeSession(getSession(), reason);
+    public void disconnect(String reason) {
+        DisconnectPacket packet = new DisconnectPacket();
+        if (reason != null) {
+            packet.setHideDisconnectionScreen(false);
+            packet.setMessage(reason);
+            NetworkManager.sendPacket(getSession(), packet);
+
+            PocketProxy.getInstance().getNetworkManager().getServer().removeSession(getSession(), reason);
+        } else {
+            packet.setHideDisconnectionScreen(true);
+            NetworkManager.sendPacket(getSession(), packet);
+            PocketProxy.getInstance().getNetworkManager().getServer().removeSession(getSession());
+        }
     }
 }

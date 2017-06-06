@@ -2,9 +2,11 @@ package me.kernelfreeze.pocketproxy.packets;
 
 import io.netty.buffer.Unpooled;
 import me.kernelfreeze.pocketproxy.Compression;
+import me.kernelfreeze.pocketproxy.NetworkManager;
 import me.kernelfreeze.pocketproxy.PocketPlayer;
 import me.kernelfreeze.pocketproxy.PocketProxy;
 import net.marfgamer.jraknet.Packet;
+import net.md_5.bungee.api.ProxyServer;
 
 import java.util.zip.DataFormatException;
 
@@ -26,7 +28,13 @@ public class LoginPacket extends DataPacket {
         player.gameEdition = readUByte();
 
         if (!PocketProxy.isCompatible(player.getProtocolVersion())) {
-            player.disconnect("You need to join with v" + PocketProxy.VERSION);
+            if (player.protocolVersion > PocketProxy.PROTOCOL) {
+                NetworkManager.sendPacket(player, new PlayStatusPacket(PlayStatusPacket.Status.LOGIN_FAILED_SERVER));
+                player.disconnect(ProxyServer.getInstance().getTranslation("outdated_server"));
+            } else {
+                NetworkManager.sendPacket(player, new PlayStatusPacket(PlayStatusPacket.Status.LOGIN_FAILED_CLIENT));
+                player.disconnect(ProxyServer.getInstance().getTranslation("outdated_client"));
+            }
             return;
         }
 
@@ -40,7 +48,7 @@ public class LoginPacket extends DataPacket {
         } catch (DataFormatException | IndexOutOfBoundsException e) {
             throw new RuntimeException("Unable to inflate login data body", e);
         }
-        //sendPacket(player, new PlayStatus(PlayStatus.Status.LOGIN_SUCCESS));
+        //sendPacket(player, new PlayStatusPacket(PlayStatusPacket.Status.LOGIN_SUCCESS));
         //sendPacket(player, new ServerToClientHandshake(PocketPlayer.getPlayer(session.getGloballyUniqueId())));
     }
 }

@@ -7,12 +7,12 @@ import lombok.Setter;
  * @author KernelFreeze
  * @since 5/06/17
  */
-public class PlayStatus extends DataPacket {
+public class PlayStatusPacket extends DataPacket {
     @Getter
     @Setter
     private Status status;
 
-    public PlayStatus(Status status) {
+    public PlayStatusPacket(Status status) {
         super(NetworkType.PLAY_STATUS_PACKET);
         this.status = status;
     }

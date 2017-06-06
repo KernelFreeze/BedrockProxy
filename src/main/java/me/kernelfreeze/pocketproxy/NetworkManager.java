@@ -89,21 +89,19 @@ public class NetworkManager implements RakNetServerListener {
         // Read the packet
         PocketPlayer p = PocketPlayer.getPlayer(session);
 
-        if (p.isLoggedIn()) {
-            DataPacket packet = new DataPacket(pk);
+        DataPacket packet = new DataPacket(pk);
 
-            switch (packet.getNetworkId()) {
-                case UNKOWN:
-                    pk.buffer().resetReaderIndex();
-                    pk.readByte();
-                    PocketProxy.getInstance().getLogger().info(
-                            String.format("Unknown packet from %s: %s", session.getAddress(), Integer.toHexString(pk.readByte()).toUpperCase())
-                    );
-                    break;
-            }
-        } else {
-            LoginPacket packet = new LoginPacket(p, pk);
-            packet.decode();
+        switch (packet.getNetworkId()) {
+            case LOGIN_PACKET:
+                new LoginPacket(p, pk).decode();
+                break;
+            case UNKOWN:
+                pk.buffer().resetReaderIndex();
+                pk.readByte();
+                PocketProxy.getInstance().getLogger().info(
+                        String.format("Unknown packet from %s: %s", session.getAddress(), Integer.toHexString(pk.readByte()).toUpperCase())
+                );
+                break;
         }
     }
 }

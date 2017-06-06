@@ -18,16 +18,15 @@ public final class PocketProxy extends Plugin {
     public static final String VERSION = "1.1.0.55";
 
     private static final int[] COMPATIBLE_PROTOCOL_VERSIONS = new int[]{PROTOCOL};
+
     @Getter
     private static PocketProxy instance;
+
     @Getter
     private PublicKey mojangPublicKey;
+
     @Getter
     private NetworkManager networkManager;
-
-    public static int[] getCompatibleProtocolVersions() {
-        return COMPATIBLE_PROTOCOL_VERSIONS.clone();
-    }
 
     public static boolean isCompatible(int protocolVersion) {
         return Arrays.binarySearch(COMPATIBLE_PROTOCOL_VERSIONS, protocolVersion) >= 0;
