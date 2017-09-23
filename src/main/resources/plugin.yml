@@ -1,5 +1,5 @@
-name: PocketProxy
+name: BedrockProxy
 version: ${project.version}
-main: me.kernelfreeze.pocketproxy.PocketProxy
+main: me.kernelfreeze.bedrockproxy.BedrockProxy
 description: Allow MCPE players on your BungeeCord server!
 author: KernelFreeze

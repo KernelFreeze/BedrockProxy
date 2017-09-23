@@ -1,8 +1,8 @@
-# PocketProxy
-PocketProxy adds support for the Minecraft Pocket Edition protocol as well as allowing you to use XBox Live authentication.
+# BedrockProxy
+BedrockProxy adds support for the Minecraft Pocket Edition protocol as well as allowing you to use XBox Live authentication.
 
 ## How it works?
-PocketProxy instantly translates the instructions of each protocol, and adapts the blocks and entities to the compatible ones.
+BedrockProxy instantly translates the instructions of each protocol, and adapts the blocks and entities to the compatible ones.
 
 ![How it works](http://i.imgur.com/rUOl3fo.png)
 

@@ -5,13 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>me.kernelfreeze</groupId>
-    <artifactId>PocketProxy</artifactId>
+    <artifactId>BedrockProxy</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>PocketProxy</name>
+    <name>BedrockProxy</name>
 
-    <description>Allow MCPE players on your BungeeCord server!</description>
+    <description>Allow Bedrock players on your BungeeCord server!</description>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -64,19 +64,19 @@
         <dependency>
             <groupId>net.md-5</groupId>
             <artifactId>bungeecord-api</artifactId>
-            <version>1.11-SNAPSHOT</version>
+            <version>1.12-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>net.md-5</groupId>
             <artifactId>bungeecord-native</artifactId>
-            <version>1.11-SNAPSHOT</version>
+            <version>1.12-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>net.md-5</groupId>
             <artifactId>bungeecord-proxy</artifactId>
-            <version>1.11-SNAPSHOT</version>
+            <version>1.12-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
